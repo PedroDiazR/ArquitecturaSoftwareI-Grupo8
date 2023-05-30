@@ -1,17 +1,21 @@
 package main
 
-import (
-	"encoding/json"
-	"fmt"
-	"go-api/items"
-)
+import "go-api/app"
 
 func main() {
-	fmt.Println(items.ItemStore)
-
-	item := items.GetItem()
-
-	itemJSON, _ := json.MarshalIndent(item, "", "    ")
-
-	fmt.Println(string(itemJSON))
+	app.StartApp()
 }
+
+/*
+	notas, err, err1 := items.ErrorTesting(-1)
+	if err != nil{
+		fmt.Println(err)
+		return
+	}
+	if err1 != nil {
+		fmt.Println(err1)
+		return
+	}
+	println(notas)
+
+*/
