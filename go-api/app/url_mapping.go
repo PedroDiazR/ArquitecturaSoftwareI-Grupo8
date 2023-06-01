@@ -5,5 +5,7 @@ import (
 )
 
 func mapUrls() {
-	log.Info("hola")
+
+	//router.GET("/prueba")
+	log.Println("andando...")
 }
