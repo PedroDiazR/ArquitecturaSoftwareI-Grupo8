@@ -4,8 +4,10 @@ package controllers
 // get y post
 
 import (
+	"dto/hotels_dto/hotel_dto.go"
 	"fmt"
 	"go-api/services"
+	"log"
 	"net/http"
 	"strconv"
 
@@ -16,9 +18,11 @@ const (
 	paramItemID = "itemID"
 )
 
-func GetItem(ctx *gin.Context) {
+func GetHotels(c *gin.Context) {
+	log.Println("get hotel en proceso")
 	// Get id param from URL as string
-	idString := ctx.Param(paramItemID)
+	var HotelsDto hotels_dto.HotelsDto
+	hotelsDto, err := service.HotelSer
 
 	// Convert string ID to int ID
 	id, err := strconv.ParseInt(idString, 10, 64)
