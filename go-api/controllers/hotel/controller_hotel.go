@@ -1,5 +1,8 @@
 package controllers
 
+// Funciones que hay que poner
+// get y post
+
 import (
 	"fmt"
 	"go-api/services"
