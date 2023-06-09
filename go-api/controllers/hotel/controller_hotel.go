@@ -1,46 +1,47 @@
-package controllers
+package hotel
 
 // Funciones que hay que poner
 // get y post
 
 import (
-	"dto/hotels_dto/hotel_dto.go"
-	"fmt"
-	"go-api/services"
+	hotel_dto "go-api/dto/hotels_dto"
 	"log"
 	"net/http"
 	"strconv"
 
+	se "go-api/services"
+
 	"github.com/gin-gonic/gin"
 )
 
-const (
-	paramItemID = "itemID"
-)
+func GetHotelbyid(ctx *gin.Context) {
 
-func GetHotels(c *gin.Context) {
-	log.Println("get hotel en proceso")
-	// Get id param from URL as string
-	var HotelsDto hotels_dto.HotelsDto
-	hotelsDto, err := service.HotelSer
+	id, _ := strconv.Atoi(ctx.Param("id"))
 
-	// Convert string ID to int ID
-	id, err := strconv.ParseInt(idString, 10, 64)
+	var hotelDto hotel_dto.HotelDto
+	hotelDto, err := se.HotelService.GetHotelbyid(id)
+	ctx.JSON(http.StatusOK, hotelDto)
+
 	if err != nil {
-		fmt.Println("Error parsing item ID", err)
-		ctx.JSON(http.StatusBadRequest, err) // Then we will create a custom error struct
-		return
+		log.Print("error")
 	}
+}
 
-	// Call the service with int ID
-	services.ItemClient = services.MlClient{}
-	item, err := services.GetItem(id)
+func InsertHotel(ctx *gin.Context) {
+	//Aca hay que hacer el token verificacion, pero in pta idea como es, lo vemos despues.
+
+	var hotelDto hotel_dto.HotelDto
+
+	hotelDto.Name = ctx.Param("name")
+	num, _ := strconv.Atoi(ctx.Param("Nroom"))
+	hotelDto.RoomsAvailable = num
+	hotelDto.Description = ctx.Param("descr")
+
+	hotelDto, err := se.HotelService.InsertHotel(hotelDto)
+
 	if err != nil {
-		fmt.Println("Error getting item", err)
-		ctx.JSON(http.StatusInternalServerError, err) // Then we will create a custom error struct
-		return
+		log.Println("Error")
 	}
+	ctx.JSON(http.StatusOK, hotelDto)
 
-	// Successful case
-	ctx.JSON(http.StatusOK, item)
 }

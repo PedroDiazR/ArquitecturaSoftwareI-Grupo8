@@ -28,9 +28,15 @@ func init() {
 }
 
 func StartApp() {
+
 	mapUrls()
 
 	log.Info("Starting Server")
 	router.Run(":8000")
+
+}
+
+func Hola() {
+	log.Info("Hola")
 
 }
