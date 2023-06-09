@@ -2,7 +2,6 @@ package controllers
 
 import (
 	"errors"
-	"go-api/services"
 	"net/http"
 	"strings"
 
@@ -10,18 +9,18 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-//Middleware para verificar el token de autenticacion
+// Middleware para verificar el token de autenticacion
 func VerificacionToken() gin.HandlerFunc {
-	return func(c *gin.Context){
+	return func(c *gin.Context) {
 		authHeader := c.GetHeader("Authorization")
 		if authHeader == "" { //Si no hay token registramos un error
 			handleUnauthorizedError(c, "No given token")
 		}
 
-		tokenString := strings.Replace (authHeader, "bearer", "", 1) //extraemos el token
-		token, err := parseAndValidateToken(tokenString) //validar el token
+		tokenString := strings.Replace(authHeader, "bearer", "", 1) //extraemos el token
+		token, err := parseAndValidateToken(tokenString)            //validar el token
 
-		if err != nil{ //si hay algun error en el token
+		if err != nil { //si hay algun error en el token
 			handleUnauthorizedError(c, "Not a Valid Token")
 			return
 		}
@@ -35,7 +34,7 @@ func VerificacionToken() gin.HandlerFunc {
 		//extraemos el ID del usuario del token
 		userID, ok := claims["user_id"].(float64)
 		if !ok {
-			handleUnauthorizedError(c, "Unauthorized") //si el ID no es valido, aborta 
+			handleUnauthorizedError(c, "Unauthorized") //si el ID no es valido, aborta
 			return
 		}
 
@@ -45,11 +44,11 @@ func VerificacionToken() gin.HandlerFunc {
 	}
 }
 
-func parseAndValidateToken(tokenString string)(*jwt.Token, error){
+func parseAndValidateToken(tokenString string) (*jwt.Token, error) {
 	secretKey := []byte("your_jwt_secretKey")
 
 	//analizamos el token con la clave secreta
-	token, err := jwt.Parse(tokenString, func(token *jwt.Token)(interface{}, error){
+	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
 		return secretKey, nil
 	})
 
@@ -60,15 +59,15 @@ func parseAndValidateToken(tokenString string)(*jwt.Token, error){
 	return token, nil
 }
 
-//manejo de errores de autorizacion y mensaje
-func handleUnauthorizedError(c *gin.Context, message string){
+// manejo de errores de autorizacion y mensaje
+func handleUnauthorizedError(c *gin.Context, message string) {
 	err := errors.New(message)
 	c.Error(err)
 	c.JSON(http.StatusUnauthorized, gin.H{"error": message})
 	c.Abort()
 }
 
-func Admin(userID int)bool {
+func Admin(userID int) bool {
 	userDto, err := service.UserService.GetUserById(userID)
 	if err != nil {
 		log.Error{"Erroe en Get de usuario del token"}
@@ -77,5 +76,5 @@ func Admin(userID int)bool {
 	if userDto.Admin == 1 {
 		return true
 	}
-	return false
+	return false
 }
