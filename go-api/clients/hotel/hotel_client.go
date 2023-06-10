@@ -7,7 +7,7 @@ import (
 	log "github.com/sirupsen/logrus"
 )
 
-var Db *gorm.DB
+var Db *gorm.DB //Puntero a base de datos
 
 func GetHotelbyid(id int) model.Hotel {
 	var hotel model.Hotel
